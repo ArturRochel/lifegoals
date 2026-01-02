@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends
 from sqlmodel import Session
 from app.database import get_session, create_db_and_tables
 from app.models_api import ModeloObjetivoEntrada, ModeloObjetivoSaida
-from app.services.objetivos import criar_objetivo, listar_objetivos
+from app.services.objetivos import *
 from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
@@ -32,3 +32,8 @@ def cadastrar_objetivo(dados: ModeloObjetivoEntrada, session: Session = Depends(
     objetivo = criar_objetivo(session= session, dados=dados)
 
     return ModeloObjetivoSaida.model_validate(objetivo, from_attributes=True)
+
+@app.delete("/objetivos/{id}", description="Rota para realizar a exclusão de um objetivo através do ID.")
+def excluir_objetivo(id: id, session: Session = Depends(get_session)):
+    mensagem = deletar_objetivo(session= session, id= int)
+    return mensagem

@@ -38,3 +38,11 @@ def listar_objetivos(session: Session) -> Sequence[Objetivo]:
     consulta = select(Objetivo)
     resultados = session.exec(consulta).all()
     return resultados
+
+def deletar_objetivo(session: Session, id: int) -> str:
+    objetivo = session.query(Objetivo).filter(Objetivo.id == id).first()
+    if not objetivo:
+        return "Objetivo não encontrado"
+    session.delete(objetivo)
+    session.commit()
+    return "Objetivo excluído com sucesso"
